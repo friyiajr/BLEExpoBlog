@@ -10,14 +10,21 @@ import DeviceModal from "./DeviceConnectionModal";
 import useBLE from "./useBLE";
 
 const App = () => {
-  const { allDevices, connectedDevice, connectToDevice, color } = useBLE();
+  const {
+    allDevices,
+    connectedDevice,
+    connectToDevice,
+    color,
+    requestPermissions,
+    scanForPeripherals,
+  } = useBLE();
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
   const scanForDevices = async () => {
-    // const isPermissionsEnabled = await requestPermissions();
-    // if (isPermissionsEnabled) {
-    //   scanForPeripherals();
-    // }
+    const isPermissionsEnabled = await requestPermissions();
+    if (isPermissionsEnabled) {
+      scanForPeripherals();
+    }
   };
 
   const hideModal = () => {
@@ -30,15 +37,11 @@ const App = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: color }]}>
       <View style={styles.heartRateTitleWrapper}>
         {connectedDevice ? (
           <>
-            <Text
-              style={[styles.heartRateTitleText, { backgroundColor: color }]}
-            >
-              Connected
-            </Text>
+            <Text style={styles.heartRateTitleText}>Connected</Text>
           </>
         ) : (
           <Text style={styles.heartRateTitleText}>
